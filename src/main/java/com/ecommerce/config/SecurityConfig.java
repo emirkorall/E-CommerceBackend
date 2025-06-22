@@ -1,7 +1,7 @@
 package com.ecommerce.config;
 
 
-import com.ecommerce.repository.UserRepository;
+import com.ecommerce.user.UserRepository;
 
 
 import org.springframework.context.annotation.Bean;

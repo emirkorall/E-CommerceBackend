@@ -1,6 +1,5 @@
 package com.ecommerce.address;
 
-
 import com.ecommerce.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,41 +13,33 @@ import lombok.NoArgsConstructor;
 @Table(name = "address", schema = "ecommerce")
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
+  @Column(name = "title")
+  private String title;
 
-    @Column(name = "title")
-    private String title;
+  @Column(name = "name")
+  private String name;
 
+  @Column(name = "surname")
+  private String surname;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "phone")
+  private String phone;
 
+  @Column(name = "city")
+  private String city;
 
-    @Column(name = "surname")
-    private String surname;
+  @Column(name = "district")
+  private String district;
 
+  @Column(name = "neighborhood")
+  private String neighborhood;
 
-    @Column(name = "phone")
-    private String phone;
-
-
-    @Column(name = "city")
-    private String city;
-
-
-    @Column(name = "district")
-    private String district;
-
-
-    @Column(name = "neighborhood")
-    private String neighborhood;
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
-    private User user;
-
+  @ManyToOne(
+      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinColumn(name = "user_id")
+  private User user;
 }

@@ -1,14 +1,12 @@
 package com.ecommerce.orderproduct;
 
-
 import com.ecommerce.order.Order;
 import com.ecommerce.product.Product;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Entity
 @AllArgsConstructor
@@ -16,19 +14,19 @@ import java.math.BigDecimal;
 @Data
 @Table(name = "order_product", schema = "ecommerce")
 public class OrderProduct {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+  @ManyToOne
+  @JoinColumn(name = "order_id")
+  private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+  @ManyToOne
+  @JoinColumn(name = "product_id")
+  private Product product;
 
-    private int quantity;
+  private int quantity;
 
-    private BigDecimal purchasePrice;
+  private BigDecimal purchasePrice;
 }

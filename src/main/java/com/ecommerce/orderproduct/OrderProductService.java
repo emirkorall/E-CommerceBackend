@@ -4,15 +4,15 @@ import java.util.List;
 
 public interface OrderProductService {
 
-    List<OrderProduct> findAllOrderProducts();
+  List<OrderProduct> findAllOrderProducts();
 
-    OrderProduct findOrderProductById(Long id);
+  OrderProduct findOrderProductById(Long id);
 
-    OrderProduct saveOrderProduct(OrderProduct orderProduct);
+  OrderProduct saveOrderProduct(OrderProduct orderProduct);
 
-    OrderProduct deleteOrderProductById(Long id);
+  OrderProduct deleteOrderProductById(Long id);
 
-    List<OrderProduct> findOrderProductsByOrderId(Long orderId);
+  List<OrderProduct> findOrderProductsByOrderId(Long orderId);
 
-    List<OrderProduct> findOrderProductsByProductId(Long productId);
+  List<OrderProduct> findOrderProductsByProductId(Long productId);
 }

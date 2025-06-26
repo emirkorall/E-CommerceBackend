@@ -49,9 +49,8 @@ public class ProductServiceImp implements ProductService {
     public ProductResponse updateProduct(long id, ProductRequest request) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ApiException("Product not found with id: " + id, HttpStatus.NOT_FOUND));
-        Product updated = productConverter.toEntity(request);
-        updated.setId(id);
-        return productConverter.toResponse(productRepository.save(updated));
+        productConverter.updateEntity(existingProduct, request);
+        return productConverter.toResponse(productRepository.save(existingProduct));
     }
 
     @Override

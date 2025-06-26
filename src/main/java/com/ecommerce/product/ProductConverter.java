@@ -35,4 +35,15 @@ public class ProductConverter {
                 entity.getFeatures());
 
     }
+
+    public void updateEntity(Product product, ProductRequest request) {
+        product.setName(request.name());
+        product.setPrice(request.price());
+        product.setImage(request.image());
+        product.setCategory(request.category());
+        product.setRating(request.rating());
+        product.setReviews(request.reviews());
+        product.setNew(request.isNew());
+        product.setFeatures(request.features());
+    }
 }

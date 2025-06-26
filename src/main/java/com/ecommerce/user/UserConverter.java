@@ -27,4 +27,11 @@ public class UserConverter {
                 entity.getEmail(),
                 entity.getRole());
     }
+
+    public void updateEntity(User user, UserRequest request, org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+        user.setName(request.name());
+        user.setSurname(request.surname());
+        user.setEmail(request.email());
+        user.setPassword(passwordEncoder.encode(request.password()));
+    }
 }

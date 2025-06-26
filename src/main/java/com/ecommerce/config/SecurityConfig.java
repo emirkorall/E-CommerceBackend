@@ -59,7 +59,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:5173/"));
+        corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:5173"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         corsConfiguration.setAllowCredentials(true);
@@ -73,18 +73,19 @@ public class SecurityConfig {
 
     //SECURITY RULES FOR HTTP REQUEST//
     @Bean
-
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return httpSecurity
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/").permitAll();
                     auth.requestMatchers("/api/auth/**").permitAll();
-                    auth.requestMatchers("/api/user/**").permitAll();
-                    auth.requestMatchers("/api/v1/products").permitAll();
-                    auth.requestMatchers("/api/v1/orders/**", "/api/v1/card/**", "/api/v1/address/**").hasRole("USER");
-                    auth.requestMatchers("/admin/**", "/api/v1/products/**", "/role/**").hasRole("ADMIN");
+                    auth.requestMatchers("/api/users/**").hasRole("USER");
+                    auth.requestMatchers("/api/products/**").permitAll();
+                    auth.requestMatchers("/api/orders/**", "/api/cards/**", "/api/addresses/**", "/api/cart/**").hasRole("USER");
+                    auth.requestMatchers("/roles").permitAll();
+                    auth.requestMatchers("/admin/**", "/roles/**").hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

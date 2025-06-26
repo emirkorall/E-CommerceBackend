@@ -3,14 +3,15 @@ package com.ecommerce.order;
 
 import com.ecommerce.order.dto.OrderRequest;
 import com.ecommerce.order.dto.OrderResponse;
-import jakarta.validation.Valid;
+import com.ecommerce.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -21,34 +22,28 @@ public class OrderController {
     }
 
     @GetMapping
-
-    public ResponseEntity<List<OrderResponse>> getAllOrders() {
-        return ResponseEntity.ok(orderService.findAllOrders());
+    public ResponseEntity<List<OrderResponse>> getAllOrders(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(orderService.findAllOrders(user));
     }
 
     @GetMapping("/{id}")
-
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable long id) {
-        return ResponseEntity.ok(orderService.findOrderById(id));
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable long id, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(orderService.findOrderById(id, user));
     }
 
     @PostMapping
-
-    public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest request) {
-        OrderResponse response = orderService.saveOrder(request);
-        return ResponseEntity.status(201).body(response);
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request, @AuthenticationPrincipal User user) {
+        return ResponseEntity.status(201).body(orderService.saveOrder(request, user));
     }
 
     @PutMapping("/{id}")
-
-    public ResponseEntity<OrderResponse> updateOrder(@PathVariable long id, @RequestBody OrderRequest request) {
-        return ResponseEntity.ok(orderService.updateOrder(id, request));
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable long id, @RequestBody OrderRequest request, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(orderService.updateOrder(id, request, user));
     }
 
     @DeleteMapping("/{id}")
-
-    public ResponseEntity<OrderResponse> deleteOrder(@PathVariable long id) {
-        return ResponseEntity.ok(orderService.deleteOrderById(id));
+    public ResponseEntity<OrderResponse> deleteOrder(@PathVariable long id, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(orderService.deleteOrderById(id, user));
     }
 
 }

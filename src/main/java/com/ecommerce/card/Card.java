@@ -2,6 +2,7 @@ package com.ecommerce.card;
 
 
 import com.ecommerce.order.Order;
+import com.ecommerce.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,5 +47,9 @@ public class Card {
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

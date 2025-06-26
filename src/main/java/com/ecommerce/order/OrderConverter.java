@@ -28,4 +28,15 @@ public class OrderConverter {
                 maskedCard,
                 order.getPrice());
     }
+
+    public void updateEntity(Order order, OrderRequest request) {
+        order.setAddressId(request.addressId());
+        order.setOrderDate(request.orderDate());
+        order.setCardNo(request.cardNo());
+        order.setCardName(request.cardName());
+        order.setCardMonth(request.cardMonth());
+        order.setCardYear(request.cardYear());
+        order.setCardCvv(request.cardCvv());
+        order.setPrice(request.price());
+    }
 }

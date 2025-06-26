@@ -1,6 +1,12 @@
 package com.ecommerce.card;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.ecommerce.user.User;
 
-public interface CardRepository extends JpaRepository<Card,Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface CardRepository extends JpaRepository<Card, Long> {
+    Optional<Card> findByIdAndUser(Long id, User user);
+    List<Card> findAllByUser(User user);
 }

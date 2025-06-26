@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface AddressService {
 
-    List<AddressResponse> findAllAddresses();
+    List<AddressResponse> findAllAddresses(User user);
 
-    AddressResponse findAddressById(long id);
+    AddressResponse findAddressById(long id, User user);
 
     AddressResponse saveAddress(AddressRequest request, User user);
 
     AddressResponse updateAddress(long id, AddressRequest request, User user);
 
-    AddressResponse deleteAddressById(long id);
+    AddressResponse deleteAddressById(long id, User user);
 }

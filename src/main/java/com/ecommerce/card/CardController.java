@@ -3,9 +3,10 @@ package com.ecommerce.card;
 
 import com.ecommerce.card.dto.CardRequest;
 import com.ecommerce.card.dto.CardResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.ecommerce.user.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 
@@ -21,34 +22,27 @@ public class CardController {
     }
 
     @GetMapping
-
-    public ResponseEntity<List<CardResponse>> getAllCards() {
-        return ResponseEntity.ok(cardService.findAllCards());
+    public ResponseEntity<List<CardResponse>> getAllCards(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(cardService.findAllCards(user));
     }
 
     @GetMapping("/{id}")
-
-    public ResponseEntity<CardResponse> getCardById(@PathVariable long id) {
-        return ResponseEntity.ok(cardService.findCardById(id));
-
+    public ResponseEntity<CardResponse> getCardById(@PathVariable long id, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(cardService.findCardById(id, user));
     }
 
     @PostMapping
-
-    public ResponseEntity<CardResponse> createCard(@Valid @RequestBody CardRequest request) {
-        CardResponse response = cardService.saveCard(request);
-        return ResponseEntity.status(201).body(response);
+    public ResponseEntity<CardResponse> createCard(@RequestBody CardRequest request, @AuthenticationPrincipal User user) {
+        return ResponseEntity.status(201).body(cardService.saveCard(request, user));
     }
 
     @PutMapping("/{id}")
-
-    public ResponseEntity<CardResponse> updateCard(@PathVariable long id, @Valid @RequestBody CardRequest request) {
-        return ResponseEntity.ok(cardService.updateCard(id, request));
+    public ResponseEntity<CardResponse> updateCard(@PathVariable long id, @RequestBody CardRequest request, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(cardService.updateCard(id, request, user));
     }
 
     @DeleteMapping("/{id}")
-
-    public ResponseEntity<CardResponse> deleteCard(@PathVariable long id) {
-        return ResponseEntity.ok(cardService.deleteCardById(id));
+    public ResponseEntity<CardResponse> deleteCard(@PathVariable long id, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(cardService.deleteCardById(id, user));
     }
 }

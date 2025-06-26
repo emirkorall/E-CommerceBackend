@@ -25,19 +25,17 @@ public class AddressServiceImp implements AddressService {
 
 
     @Override
-    public List<AddressResponse> findAllAddresses() {
-        return addressRepository.findAll().stream()
+    public List<AddressResponse> findAllAddresses(User user) {
+        return addressRepository.findAllByUser(user).stream()
                 .map(addressConverter::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public AddressResponse findAddressById(long id) {
-
-        Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new ApiException("Address not found with id: " + id, HttpStatus.NOT_FOUND));
+    public AddressResponse findAddressById(long id, User user) {
+        Address address = addressRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new ApiException("Address not found", HttpStatus.NOT_FOUND));
         return addressConverter.toResponse(address);
-
     }
 
 
@@ -47,24 +45,23 @@ public class AddressServiceImp implements AddressService {
             throw new ApiException("Address data must not be null", HttpStatus.BAD_REQUEST);
         }
         Address address = addressConverter.toEntity(request, user);
-        return addressConverter.toResponse(addressRepository.save(address));
+        Address savedAddress = addressRepository.save(address);
+        return addressConverter.toResponse(savedAddress);
     }
 
 
     @Override
     public AddressResponse updateAddress(long id, AddressRequest request, User user) {
-        Address existingAddress = addressRepository.findById(id)
-                .orElseThrow(() -> new ApiException("Address not found with id: " + id, HttpStatus.NOT_FOUND));
-        Address updated = addressConverter.toEntity(request, user);
-        updated.setId(id);
-        return addressConverter.toResponse(addressRepository.save(updated));
-
+        Address existingAddress = addressRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new ApiException("Address not found", HttpStatus.NOT_FOUND));
+        addressConverter.updateEntity(existingAddress, request, user);
+        return addressConverter.toResponse(addressRepository.save(existingAddress));
     }
 
     @Override
-    public AddressResponse deleteAddressById(long id) {
-        Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new ApiException("Address not found with id: " + id, HttpStatus.NOT_FOUND));
+    public AddressResponse deleteAddressById(long id, User user) {
+        Address address = addressRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new ApiException("Address not found", HttpStatus.NOT_FOUND));
         addressRepository.delete(address);
         return addressConverter.toResponse(address);
     }

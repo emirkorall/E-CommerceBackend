@@ -47,15 +47,11 @@ public class RoleServiceImp implements RoleService {
     }
 
     @Override
-
     public RoleResponse updateRole(long id, RoleRequest request) {
         Role existingRole = roleRepository.findById(id)
                 .orElseThrow(() -> new ApiException("Role not found with id: " + id, HttpStatus.NOT_FOUND));
-
-        existingRole.setAuthority(request.authority());
-        Role updated = roleConverter.toEntity(request);
-        updated.setId(id);
-        return roleConverter.toResponse(roleRepository.save(updated));
+        roleConverter.updateEntity(existingRole, request);
+        return roleConverter.toResponse(roleRepository.save(existingRole));
     }
 
     @Override

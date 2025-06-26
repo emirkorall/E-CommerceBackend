@@ -37,4 +37,11 @@ public class CardConverter {
         String lastFourDigits = cardNo.substring(length - 4);
         return "**** **** **** " + lastFourDigits;
     }
+
+    public void updateEntity(Card card, CardRequest request) {
+        card.setCardNo(request.cardNo());
+        card.setCardName(request.cardName());
+        card.setCardMonth(request.cardMonth());
+        card.setCardYear(request.cardYear());
+    }
 }

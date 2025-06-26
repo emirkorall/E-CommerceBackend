@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/products")
 public class ProductController {
     public final ProductService productService;
 
@@ -32,7 +32,6 @@ public class ProductController {
     @PostMapping
 
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request) {
-        ProductResponse response = productService.saveProduct(request);
         return ResponseEntity.status(201).body(productService.saveProduct(request));
     }
 

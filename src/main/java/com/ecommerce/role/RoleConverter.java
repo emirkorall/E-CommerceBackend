@@ -19,4 +19,8 @@ public class RoleConverter {
         return new RoleResponse(entity.getId(),
                 entity.getAuthority());
     }
+
+    public void updateEntity(Role role, RoleRequest request) {
+        role.setAuthority(request.authority());
+    }
 }

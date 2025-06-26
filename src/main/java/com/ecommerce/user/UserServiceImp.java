@@ -62,13 +62,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-
     public UserResponse updateUser(long id, UserRequest request) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
-        User updated = userconverter.toEntity(request, existingUser.getRole(), passwordEncoder);
-        updated.setId(id);
-        return userconverter.toResponse(userRepository.save(updated));
+        userconverter.updateEntity(existingUser, request, passwordEncoder);
+        return userconverter.toResponse(userRepository.save(existingUser));
     }
 
 

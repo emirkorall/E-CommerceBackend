@@ -34,6 +34,17 @@ public class AddressConverter {
                 entity.getNeighborhood());
     }
 
+    public void updateEntity(Address address, AddressRequest dto, User user) {
+        address.setTitle(dto.title());
+        address.setName(dto.name());
+        address.setSurname(dto.surname());
+        address.setPhone(dto.phone());
+        address.setCity(dto.city());
+        address.setDistrict(dto.district());
+        address.setNeighborhood(dto.neighborhood());
+        address.setUser(user);
+    }
+
 }
 
 

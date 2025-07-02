@@ -5,9 +5,7 @@ target/
 !**/src/test/**/target/
 
 # Application properties with sensitive information
-src/main/resources/application.properties
 src/main/resources/application-*.properties
-!src/main/resources/application.properties.template
 
 ### STS ###
 .apt_generated

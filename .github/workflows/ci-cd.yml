@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      JWT_SECRET_KEY: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
 
     steps:
     - uses: actions/checkout@v3
@@ -22,4 +20,6 @@ jobs:
         distribution: 'temurin'
 
     - name: Build with Maven Wrapper
-      run: ./mvnw clean test 
+      env:
+        JWT_SECRET_KEY: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      run: ./mvnw clean test -DJWT_SECRET_KEY=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970 

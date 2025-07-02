@@ -49,7 +49,7 @@ public class AuthService {
 
     Role userRole =
         roleRepository
-            .findByAuthority("ROLE_" + request.authority().toUpperCase())
+            .findByAuthority(request.authority().toUpperCase())
             .orElseThrow(
                 () -> new ApiException("User Role not set", HttpStatus.INTERNAL_SERVER_ERROR));
 

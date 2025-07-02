@@ -17,8 +17,8 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_DB: ecommerce_db
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${POSTGRES_USER}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         options: >-
           --health-cmd="pg_isready -U postgres"
           --health-interval=10s

@@ -7,7 +7,6 @@ import com.ecommerce.auth.AuthConverter;
 import com.ecommerce.auth.AuthService;
 import com.ecommerce.auth.dto.AuthResponse;
 import com.ecommerce.config.JwtService;
-import com.ecommerce.role.Role;
 import com.ecommerce.role.RoleRepository;
 import com.ecommerce.user.User;
 import com.ecommerce.user.UserRepository;
@@ -43,19 +42,16 @@ class AuthServiceTest {
     // Test signup success
     SignupRequest signupRequest =
         new SignupRequest("Test", "User", "test@example.com", "password", "USER");
-    Role userRole = new Role();
-    userRole.setAuthority("ROLE_USER");
     User user = new User();
-    user.setRole(userRole);
+    user.setAuthority("USER");
     when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
-    when(roleRepository.findByAuthority("ROLE_USER")).thenReturn(Optional.of(userRole));
     when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
     when(userRepository.save(any(User.class))).thenReturn(user);
     when(jwtService.generateToken(any(User.class))).thenReturn("jwt-token");
     when(authConverter.toResponse(any(User.class), anyString(), anyString()))
         .thenReturn(
             new AuthResponse(
-                1L, "Test", "test@example.com", userRole, "Registration succesfull", "jwt-token"));
+                1L, "Test", "test@example.com", "USER", "Registration succesfull", "jwt-token"));
     AuthResponse response = authService.signup(signupRequest);
     assertNotNull(response);
     assertEquals("jwt-token", response.token());
@@ -66,8 +62,7 @@ class AuthServiceTest {
     // Test login success
     LoginRequest loginRequest = new LoginRequest("test@example.com", "password");
     User user = new User();
-    Role userRole = new Role();
-    user.setRole(userRole);
+    user.setAuthority("USER");
     Authentication authentication = mock(Authentication.class);
     when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(authentication);
@@ -76,7 +71,7 @@ class AuthServiceTest {
     when(authConverter.toResponse(any(User.class), anyString(), anyString()))
         .thenReturn(
             new AuthResponse(
-                1L, "Test", "test@example.com", userRole, "Login succesfull", "jwt-token"));
+                1L, "Test", "test@example.com", "USER", "Login succesfull", "jwt-token"));
     AuthResponse response = authService.login(loginRequest);
     assertNotNull(response);
     assertEquals("jwt-token", response.token());

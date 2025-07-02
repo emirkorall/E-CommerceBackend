@@ -9,6 +9,6 @@ public class AuthConverter {
 
   public AuthResponse toResponse(User user, String message, String token) {
     return new AuthResponse(
-        user.getId(), user.getName(), user.getEmail(), user.getRole(), message, token);
+        user.getId(), user.getName(), user.getEmail(), user.getAuthority(), message, token);
   }
 }

@@ -1,7 +1,6 @@
 package com.ecommerce.user;
 
 import com.ecommerce.address.Address;
-import com.ecommerce.role.Role;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,10 +37,8 @@ public class User implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @ManyToOne(
-      cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
-  @JoinColumn(name = "role_id")
-  private Role role;
+  @Column(name = "authority", nullable = false)
+  private String authority;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
   private List<Address> addresses;
@@ -55,7 +52,7 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getAuthority());
+    GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority);
     return Collections.singleton(grantedAuthority);
   }
 

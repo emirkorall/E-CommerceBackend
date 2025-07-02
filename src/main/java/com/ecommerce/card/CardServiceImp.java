@@ -22,7 +22,7 @@ public class CardServiceImp implements CardService {
 
   @Override
   public List<CardResponse> findAllCards(User user) {
-    if (user.getRole().getAuthority().equals("ROLE_ADMIN")) {
+    if (user.getAuthority().equals("ADMIN")) {
       return cardRepository.findAll().stream()
           .map(cardConverter::toResponse)
           .collect(Collectors.toList());

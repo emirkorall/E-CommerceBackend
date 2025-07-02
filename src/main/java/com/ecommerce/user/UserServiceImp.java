@@ -1,8 +1,6 @@
 package com.ecommerce.user;
 
 import com.ecommerce.exception.ApiException;
-import com.ecommerce.role.Role;
-import com.ecommerce.role.RoleRepository;
 import com.ecommerce.user.dto.UserRequest;
 import com.ecommerce.user.dto.UserResponse;
 import java.util.List;
@@ -16,17 +14,14 @@ public class UserServiceImp implements UserService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final RoleRepository roleRepository;
   private final UserConverter userconverter;
 
   public UserServiceImp(
       UserRepository userRepository,
       PasswordEncoder passwordEncoder,
-      RoleRepository roleRepository,
       UserConverter userconverter) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
-    this.roleRepository = roleRepository;
     this.userconverter = userconverter;
   }
 
@@ -51,16 +46,12 @@ public class UserServiceImp implements UserService {
     if (request == null) {
       throw new ApiException("User data must not be null", HttpStatus.BAD_REQUEST);
     }
-    // Check if the user's email is already registered before//
     if (userRepository.findByEmail(request.email()).isPresent()) {
       throw new ApiException("Email already exists", HttpStatus.CONFLICT);
     }
-    Role userRole =
-        roleRepository
-            .findByAuthority("ROLE_USER")
-            .orElseThrow(
-                () -> new ApiException("User Role not set", HttpStatus.INTERNAL_SERVER_ERROR));
-    User user = userconverter.toEntity(request, userRole, passwordEncoder);
+    // Varsayılan olarak USER authority'si atanıyor
+    String authority = "USER";
+    User user = userconverter.toEntity(request, authority, passwordEncoder);
     User savedUser = userRepository.save(user);
     return userconverter.toResponse(savedUser);
   }

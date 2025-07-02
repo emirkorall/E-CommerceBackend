@@ -1,10 +1,6 @@
 package com.ecommerce.role;
 
-import com.ecommerce.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,20 +20,6 @@ public class Role implements GrantedAuthority {
 
   @Column(name = "authority")
   private String authority;
-
-  @OneToMany(
-      cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
-      mappedBy = "role",
-      fetch = FetchType.LAZY)
-  @JsonIgnore
-  private List<User> users;
-
-  public void addUser(User user) {
-    if (users == null) {
-      users = new ArrayList<>();
-    }
-    users.add(user);
-  }
 
   @Override
   public String getAuthority() {

@@ -21,7 +21,7 @@ public class CartServiceImp implements CartService {
 
   @Override
   public List<CartResponse> findAllCarts(User user) {
-    if (user.getRole().getAuthority().equals("ROLE_ADMIN")) {
+    if (user.getAuthority().equals("ADMIN")) {
       return cartRepository.findAll().stream()
           .map(cartConverter::toResponse)
           .collect(Collectors.toList());
@@ -39,7 +39,7 @@ public class CartServiceImp implements CartService {
         cartRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Cart not found with id: " + id));
-    if (!cart.getUser().equals(user) && !user.getRole().getAuthority().equals("ROLE_ADMIN")) {
+    if (!cart.getUser().equals(user) && !user.getAuthority().equals("ADMIN")) {
       throw new RuntimeException("Access denied");
     }
     return cartConverter.toResponse(cart);

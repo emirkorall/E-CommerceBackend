@@ -3,8 +3,6 @@ package com.ecommerce.auth;
 import com.ecommerce.auth.dto.AuthResponse;
 import com.ecommerce.config.JwtService;
 import com.ecommerce.exception.ApiException;
-import com.ecommerce.role.Role;
-import com.ecommerce.role.RoleRepository;
 import com.ecommerce.user.User;
 import com.ecommerce.user.UserRepository;
 import com.ecommerce.user.dto.LoginRequest;
@@ -23,7 +21,6 @@ public class AuthService {
   private final AuthenticationManager authenticationManager;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final RoleRepository roleRepository;
   private final AuthConverter authConverter;
   private final JwtService jwtService;
 
@@ -31,13 +28,11 @@ public class AuthService {
       AuthenticationManager authenticationManager,
       UserRepository userRepository,
       PasswordEncoder passwordEncoder,
-      RoleRepository roleRepository,
       AuthConverter authConverter,
       JwtService jwtService) {
     this.authenticationManager = authenticationManager;
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
-    this.roleRepository = roleRepository;
     this.authConverter = authConverter;
     this.jwtService = jwtService;
   }
@@ -46,24 +41,14 @@ public class AuthService {
     if (userRepository.findByEmail(request.email()).isPresent()) {
       throw new ApiException("Email already exists", HttpStatus.CONFLICT);
     }
-
-    Role userRole =
-        roleRepository
-            .findByAuthority(request.authority().toUpperCase())
-            .orElseThrow(
-                () -> new ApiException("User Role not set", HttpStatus.INTERNAL_SERVER_ERROR));
-
     User user = new User();
     user.setName(request.name());
     user.setSurname(request.surname());
     user.setEmail(request.email());
     user.setPassword(passwordEncoder.encode(request.password()));
-    user.setRole(userRole);
-
+    user.setAuthority(request.authority().toUpperCase());
     User savedUser = userRepository.save(user);
-
     String token = jwtService.generateToken(savedUser);
-
     return authConverter.toResponse(savedUser, "Registration succesfull", token);
   }
 

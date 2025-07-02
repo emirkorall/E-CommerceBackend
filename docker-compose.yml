@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: ecommerce_db
+    environment:
+      POSTGRES_DB: ecommerce_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: fender07ABCD
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  app:
+    build: .
+    container_name: ecommerce_app
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecommerce_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: fender07ABCD
+      JWT_SECRET_KEY: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    ports:
+      - "8080:8080"
+    restart: always
+
+  frontend:
+    build:
+      context: /Users/emirkoral/Git/E-commerce-Project
+      args:
+        - VITE_API_URL=http://localhost:8080
+    container_name: ecommerce_frontend
+    depends_on:
+      - app
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8080
+    restart: always
+volumes:
+  postgres_data:

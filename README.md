@@ -47,11 +47,7 @@ cd E-CommerceBackend
 ```
 
 ### Configuration
-1. Copy the template and fill in your secrets:
-   ```sh
-   cp src/main/resources/application.properties.template src/main/resources/application.properties
-   ```
-2. Or create a `.env` file in the root with your environment variables:
+1. Create a `.env` file in the root with your environment variables:
    ```env
    POSTGRES_DB=your_db
    POSTGRES_USER=your_user
@@ -70,6 +66,13 @@ docker-compose up --build
 ```
 - Backend: [http://localhost:8080](http://localhost:8080)
 - Database: [localhost:5433](localhost:5433)
+
+## ▶️ Running Locally (Without Docker)
+1. Ensure PostgreSQL is running and environment variables are set (see `.env` example above).
+2. Start the backend:
+   ```sh
+   ./mvnw spring-boot:run
+   ```
 
 ---
 

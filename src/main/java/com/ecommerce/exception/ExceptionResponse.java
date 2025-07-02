@@ -1,15 +1,13 @@
 package com.ecommerce.exception;
 
-
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Data
 public class ExceptionResponse {
-    private String message;
-    private int status;
-    private LocalDateTime dateTime;
+  private String message;
+  private int status;
+  private LocalDateTime dateTime;
 }

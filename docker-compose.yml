@@ -4,9 +4,9 @@ services:
     image: postgres:15-alpine
     container_name: ecommerce_db
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ecommerce_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: fender07ABCD
     ports:
       - "5433:5432"
     volumes:
@@ -19,10 +19,10 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecommerce_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: fender07ABCD
+      JWT_SECRET_KEY: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
     ports:
       - "8080:8080"
     restart: always
@@ -30,12 +30,15 @@ services:
   frontend:
     build:
       context: /Users/emirkoral/Git/E-commerce-Project
+      args:
+        - VITE_API_URL=http://localhost:8080
     container_name: ecommerce_frontend
     depends_on:
       - app
     ports:
       - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8080
     restart: always
-
 volumes:
   postgres_data:

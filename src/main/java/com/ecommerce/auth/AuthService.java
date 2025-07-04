@@ -49,7 +49,7 @@ public class AuthService {
     user.setAuthority(request.authority().toUpperCase());
     User savedUser = userRepository.save(user);
     String token = jwtService.generateToken(savedUser);
-    return authConverter.toResponse(savedUser, "Registration succesfull", token);
+    return authConverter.toResponse(savedUser, "Registration succesful", token);
   }
 
   public AuthResponse login(LoginRequest request) {
@@ -66,7 +66,7 @@ public class AuthService {
 
       String token = jwtService.generateToken(user);
 
-      return authConverter.toResponse(user, "Login succesfull", token);
+      return authConverter.toResponse(user, "Login succesful", token);
 
     } catch (AuthenticationException e) {
       throw new ApiException("Invalid email or password", HttpStatus.UNAUTHORIZED);

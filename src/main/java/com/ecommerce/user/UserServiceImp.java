@@ -49,7 +49,7 @@ public class UserServiceImp implements UserService {
     if (userRepository.findByEmail(request.email()).isPresent()) {
       throw new ApiException("Email already exists", HttpStatus.CONFLICT);
     }
-    // Varsayılan olarak USER authority'si atanıyor
+
     String authority = "USER";
     User user = userconverter.toEntity(request, authority, passwordEncoder);
     User savedUser = userRepository.save(user);
